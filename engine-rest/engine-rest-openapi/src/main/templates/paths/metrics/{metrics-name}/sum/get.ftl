@@ -13,8 +13,9 @@
         location = "path"
         required = true
         type = "string"
-        enumValues = ["activity-instance-start",
-                "activity-instance-end",
+        enumValues = ["decision-instances",
+                "flow-node-instances-start",
+                "flow-node-instances-end",
                 "job-acquisition-attempt",
                 "job-acquired-success",
                 "job-acquired-failure",
@@ -28,7 +29,8 @@
                 "history-cleanup-removed-decision-instances",
                 "history-cleanup-removed-batch-operations",
                 "history-cleanup-removed-task-metrics",
-                "unique-task-workers"]
+                "process-instances",
+                "task-users"]
         desc = "The name of the metric." />
 
     <@lib.parameter

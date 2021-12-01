@@ -16,16 +16,18 @@
  */
 package org.camunda.bpm.engine.impl.metrics;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.impl.db.ListQueryParameterObject;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
 import org.camunda.bpm.engine.impl.interceptor.CommandExecutor;
-import org.camunda.bpm.engine.management.MetricsQuery;
+import org.camunda.bpm.engine.impl.metrics.util.MetricsUtil;
 import org.camunda.bpm.engine.management.MetricIntervalValue;
+import org.camunda.bpm.engine.management.MetricsQuery;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Daniel Meyer
@@ -56,7 +58,7 @@ public class MetricsQueryImpl extends ListQueryParameterObject implements Serial
   }
 
   public MetricsQueryImpl name(String name) {
-    this.name = name;
+    this.name = MetricsUtil.resolveInternalName(name);
     return this;
   }
 

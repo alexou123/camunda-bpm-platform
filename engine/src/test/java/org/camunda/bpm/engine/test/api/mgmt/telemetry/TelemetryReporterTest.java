@@ -26,8 +26,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.camunda.bpm.engine.management.Metrics.ACTIVTY_INSTANCE_START;
+import static org.camunda.bpm.engine.management.Metrics.DECISION_INSTANCES;
 import static org.camunda.bpm.engine.management.Metrics.EXECUTED_DECISION_ELEMENTS;
 import static org.camunda.bpm.engine.management.Metrics.EXECUTED_DECISION_INSTANCES;
+import static org.camunda.bpm.engine.management.Metrics.FLOW_NODE_INSTANCES_START;
+import static org.camunda.bpm.engine.management.Metrics.PROCESS_INSTANCES;
 import static org.camunda.bpm.engine.management.Metrics.ROOT_PROCESS_INSTANCE_START;
 
 import java.net.HttpURLConnection;
@@ -1320,9 +1323,12 @@ public class TelemetryReporterTest {
   protected Map<String, Metric> assembleMetrics(long processCount, long decisionElementsCount, long decisionInstancesCount, long activityInstanceCount) {
     Map<String, Metric> metrics = new HashMap<>();
     metrics.put(ROOT_PROCESS_INSTANCE_START, new Metric(processCount));
+    metrics.put(PROCESS_INSTANCES, new Metric(processCount));
     metrics.put(EXECUTED_DECISION_ELEMENTS, new Metric(decisionElementsCount));
     metrics.put(EXECUTED_DECISION_INSTANCES, new Metric(decisionInstancesCount));
+    metrics.put(DECISION_INSTANCES, new Metric(decisionInstancesCount));
     metrics.put(ACTIVTY_INSTANCE_START, new Metric(activityInstanceCount));
+    metrics.put(FLOW_NODE_INSTANCES_START, new Metric(activityInstanceCount));
     return metrics;
   }
 
