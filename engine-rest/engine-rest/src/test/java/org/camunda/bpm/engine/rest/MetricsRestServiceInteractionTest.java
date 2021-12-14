@@ -352,21 +352,6 @@ public class MetricsRestServiceInteractionTest extends AbstractRestServiceTest {
   }
 
   @Test
-  public void testGetTu() {
-
-    given()
-      .pathParam("name", Metrics.TASK_USERS)
-    .then().expect()
-      .statusCode(Status.OK.getStatusCode())
-      .body("result", equalTo(10))
-     .when()
-      .get(SUM_URL);
-
-    verify(managementServiceMock, times (1)).getUniqueTaskWorkerCount(null, null);
-    verifyNoMoreInteractions(managementServiceMock);
-  }
-
-  @Test
   public void testGetUtwWithTimestamps() {
 
     given()
