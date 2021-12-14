@@ -14,27 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.engine.impl.telemetry.dto;
+package org.camunda.bpm.engine.rest.dto.telemetry;
 
 import java.util.Map;
 
-import com.google.gson.annotations.SerializedName;
+import org.camunda.bpm.engine.telemetry.LicenseKeyData;
 
-public class LicenseKeyData {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class LicenseKeyDataDto {
 
   public static final String SERIALIZED_VALID_UNTIL = "valid-until";
   public static final String SERIALIZED_IS_UNLIMITED = "unlimited";
 
   protected String customer;
   protected String type;
-  @SerializedName(value = SERIALIZED_VALID_UNTIL)
+  @JsonProperty(value = SERIALIZED_VALID_UNTIL)
   protected String validUntil;
-  @SerializedName(value = SERIALIZED_IS_UNLIMITED)
+  @JsonProperty(value = SERIALIZED_IS_UNLIMITED)
   protected Boolean isUnlimited;
   protected Map<String, String> features;
   protected String raw;
 
-  public LicenseKeyData(String customer, String type, String validUntil, Boolean isUnlimited, Map<String, String> features, String raw) {
+  public LicenseKeyDataDto(String customer, String type, String validUntil, Boolean isUnlimited, Map<String, String> features, String raw) {
     this.customer = customer;
     this.type = type;
     this.validUntil = validUntil;
@@ -91,4 +93,13 @@ public class LicenseKeyData {
     this.raw = raw;
   }
 
+  public static LicenseKeyDataDto fromEngineDto(LicenseKeyData other) {
+    return new LicenseKeyDataDto(
+        other.getCustomer(),
+        other.getType(),
+        other.getValidUntil(),
+        other.isUnlimited(),
+        other.getFeatures(),
+        other.getRaw());
+  }
 }

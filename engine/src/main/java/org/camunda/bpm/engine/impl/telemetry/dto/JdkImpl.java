@@ -16,21 +16,15 @@
  */
 package org.camunda.bpm.engine.impl.telemetry.dto;
 
-public class Database {
+import org.camunda.bpm.engine.telemetry.Jdk;
 
-  protected String vendor;
+public class JdkImpl implements Jdk {
+
   protected String version;
+  protected String vendor;
 
-  public Database(String vendor, String version) {
-    this.vendor = vendor;
+  public JdkImpl(String version, String vendor) {
     this.version = version;
-  }
-
-  public String getVendor() {
-    return vendor;
-  }
-
-  public void setVendor(String vendor) {
     this.vendor = vendor;
   }
 
@@ -40,6 +34,14 @@ public class Database {
 
   public void setVersion(String version) {
     this.version = version;
+  }
+
+  public String getVendor() {
+    return vendor;
+  }
+
+  public void setVendor(String vendor) {
+    this.vendor = vendor;
   }
 
 }

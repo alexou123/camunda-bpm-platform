@@ -14,22 +14,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.engine.impl.telemetry.dto;
+package org.camunda.bpm.engine.rest.dto.telemetry;
 
-public class Metric {
+import static org.camunda.bpm.engine.impl.util.ParseUtil.parseServerVendor;
 
-  protected long count;
+import org.camunda.bpm.engine.telemetry.ApplicationServer;
 
-  public Metric(long count) {
-    this.count = count;
+public class ApplicationServerDto {
+
+  protected String vendor;
+  protected String version;
+
+  public ApplicationServerDto(String vendor, String version) {
+    this.vendor = vendor;
+    this.version = version;
   }
 
-  public long getCount() {
-    return count;
+  public String getVendor() {
+    return vendor;
   }
 
-  public void setCount(long count) {
-    this.count = count;
+  public void setVendor(String vendor) {
+    this.vendor = vendor;
   }
 
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public static ApplicationServerDto fromEngineDto(ApplicationServer other) {
+    return new ApplicationServerDto(
+        other.getVendor(),
+        other.getVersion());
+  }
 }

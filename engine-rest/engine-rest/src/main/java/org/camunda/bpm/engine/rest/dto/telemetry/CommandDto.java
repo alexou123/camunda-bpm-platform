@@ -14,32 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.engine.impl.telemetry.dto;
+package org.camunda.bpm.engine.rest.dto.telemetry;
 
-public class Jdk {
+public class CommandDto {
 
-  protected String version;
-  protected String vendor;
+  protected long count;
 
-  public Jdk(String version, String vendor) {
-    this.version = version;
-    this.vendor = vendor;
+  public CommandDto(long count) {
+    this.count = count;
   }
 
-  public String getVersion() {
-    return version;
+  public long getCount() {
+    return count;
   }
 
-  public void setVersion(String version) {
-    this.version = version;
-  }
-
-  public String getVendor() {
-    return vendor;
-  }
-
-  public void setVendor(String vendor) {
-    this.vendor = vendor;
+  public void setCount(long count) {
+    this.count = count;
   }
 
 }
