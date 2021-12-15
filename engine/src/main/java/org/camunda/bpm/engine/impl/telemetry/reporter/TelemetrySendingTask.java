@@ -120,14 +120,12 @@ public class TelemetrySendingTask extends TimerTask {
 
     TelemetryUtil.toggleLocalTelemetry(true, telemetryRegistry, metricsRegistry);
 
-    performDataSend(false, () -> {
-      updateAndSendData(true);
-    });
+    performDataSend(false, () -> updateAndSendData(true, true));
   }
 
-  public TelemetryDataImpl updateAndSendData(boolean sendData) {
+  public TelemetryDataImpl updateAndSendData(boolean sendData, boolean addLegacyNames) {
     updateStaticData();
-    InternalsImpl dynamicData = resolveDynamicData(sendData);
+    InternalsImpl dynamicData = resolveDynamicData(sendData, addLegacyNames);
     TelemetryDataImpl mergedData = new TelemetryDataImpl(staticData);
     mergedData.mergeInternals(dynamicData);
 
@@ -260,10 +258,10 @@ public class TelemetrySendingTask extends TimerTask {
     }
   }
 
-  protected InternalsImpl resolveDynamicData(boolean reset) {
+  protected InternalsImpl resolveDynamicData(boolean reset, boolean addLegacyNames) {
     InternalsImpl result = new InternalsImpl();
 
-    Map<String, Metric> metrics = calculateMetrics(reset);
+    Map<String, Metric> metrics = calculateMetrics(reset, addLegacyNames);
     result.setMetrics(metrics);
 
     // command counts are modified after the metrics are retrieved, because
@@ -290,7 +288,7 @@ public class TelemetrySendingTask extends TimerTask {
     return commandsToReport;
   }
 
-  protected Map<String, Metric> calculateMetrics(boolean reset) {
+  protected Map<String, Metric> calculateMetrics(boolean reset, boolean addLegacyNames) {
 
     Map<String, Metric> metrics = new HashMap<>();
 
@@ -299,11 +297,13 @@ public class TelemetrySendingTask extends TimerTask {
 
       for (String metricToReport : METRICS_TO_REPORT) {
         long value = telemetryMeters.get(metricToReport).get(reset);
-        metrics.put(metricToReport, new MetricImpl(value));
+
+        if (addLegacyNames) {
+          metrics.put(metricToReport, new MetricImpl(value));
+        }
 
         // add public names
-        final String internalName = MetricsUtil.resolvePublicName(metricToReport);
-        metrics.put(internalName, new MetricImpl(value));
+        metrics.put(MetricsUtil.resolvePublicName(metricToReport), new MetricImpl(value));
       }
     }
 

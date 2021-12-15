@@ -52,7 +52,6 @@ import org.camunda.bpm.engine.impl.telemetry.dto.ProductImpl;
 import org.camunda.bpm.engine.impl.telemetry.dto.TelemetryDataImpl;
 import org.camunda.bpm.engine.impl.telemetry.reporter.TelemetryReporter;
 import org.camunda.bpm.engine.impl.util.ParseUtil;
-import org.camunda.bpm.engine.management.Metrics;
 import org.camunda.bpm.engine.telemetry.Command;
 import org.camunda.bpm.engine.telemetry.Metric;
 import org.camunda.bpm.engine.telemetry.TelemetryData;
@@ -246,14 +245,10 @@ public class ManagementServiceGetTelemetryDataTest {
 
     // then
     Map<String, Metric> metrics = telemetryData.getProduct().getInternals().getMetrics();
-    assertThat(metrics).containsOnlyKeys(ACTIVTY_INSTANCE_START, FLOW_NODE_INSTANCES_START, ROOT_PROCESS_INSTANCE_START,
-        PROCESS_INSTANCES, EXECUTED_DECISION_ELEMENTS, EXECUTED_DECISION_INSTANCES, DECISION_INSTANCES);
-    assertThat(metrics.get(ACTIVTY_INSTANCE_START).getCount()).isEqualTo(5);
+    assertThat(metrics).containsOnlyKeys(FLOW_NODE_INSTANCES_START, PROCESS_INSTANCES, EXECUTED_DECISION_ELEMENTS, DECISION_INSTANCES);
     assertThat(metrics.get(FLOW_NODE_INSTANCES_START).getCount()).isEqualTo(5);
-    assertThat(metrics.get(ROOT_PROCESS_INSTANCE_START).getCount()).isEqualTo(15);
     assertThat(metrics.get(PROCESS_INSTANCES).getCount()).isEqualTo(15);
     assertThat(metrics.get(EXECUTED_DECISION_ELEMENTS).getCount()).isEqualTo(25);
-    assertThat(metrics.get(EXECUTED_DECISION_INSTANCES).getCount()).isEqualTo(35);
     assertThat(metrics.get(DECISION_INSTANCES).getCount()).isEqualTo(35);
   }
 
@@ -287,8 +282,8 @@ public class ManagementServiceGetTelemetryDataTest {
     TelemetryData secondTelemetryData = managementService.getTelemetryData();
 
     // then
-    assertThat(firstTelemetryData.getProduct().getInternals().getMetrics().get(ACTIVTY_INSTANCE_START).getCount()).isEqualTo(5);
-    assertThat(secondTelemetryData.getProduct().getInternals().getMetrics().get(ACTIVTY_INSTANCE_START).getCount()).isEqualTo(5);
+    assertThat(firstTelemetryData.getProduct().getInternals().getMetrics().get(FLOW_NODE_INSTANCES_START).getCount()).isEqualTo(5);
+    assertThat(secondTelemetryData.getProduct().getInternals().getMetrics().get(FLOW_NODE_INSTANCES_START).getCount()).isEqualTo(5);
   }
 
   @Test
@@ -304,8 +299,8 @@ public class ManagementServiceGetTelemetryDataTest {
     TelemetryData telemetryDataAfterPiStart = managementService.getTelemetryData();
 
     // then
-    assertThat(telemetryDataBeforePiStart.getProduct().getInternals().getMetrics().get(ROOT_PROCESS_INSTANCE_START).getCount()).isEqualTo(0);
-    assertThat(telemetryDataAfterPiStart.getProduct().getInternals().getMetrics().get(ROOT_PROCESS_INSTANCE_START).getCount()).isEqualTo(1);
+    assertThat(telemetryDataBeforePiStart.getProduct().getInternals().getMetrics().get(PROCESS_INSTANCES).getCount()).isEqualTo(0);
+    assertThat(telemetryDataAfterPiStart.getProduct().getInternals().getMetrics().get(PROCESS_INSTANCES).getCount()).isEqualTo(1);
   }
 
   @Test
@@ -321,8 +316,8 @@ public class ManagementServiceGetTelemetryDataTest {
     TelemetryData telemetryDataAfterPiStart = managementService.getTelemetryData();
 
     // then
-    Metric rootPiStartMetricBeforePiStart = telemetryDataBeforePiStart.getProduct().getInternals().getMetrics().get(ROOT_PROCESS_INSTANCE_START);
-    Metric rootPiStartMetricAfterPiStart = telemetryDataAfterPiStart.getProduct().getInternals().getMetrics().get(ROOT_PROCESS_INSTANCE_START);
+    Metric rootPiStartMetricBeforePiStart = telemetryDataBeforePiStart.getProduct().getInternals().getMetrics().get(PROCESS_INSTANCES);
+    Metric rootPiStartMetricAfterPiStart = telemetryDataAfterPiStart.getProduct().getInternals().getMetrics().get(PROCESS_INSTANCES);
 
     assertThat(rootPiStartMetricBeforePiStart.getCount()).isEqualTo(0);
     assertThat(rootPiStartMetricAfterPiStart.getCount()).isEqualTo(1);
@@ -420,14 +415,11 @@ public class ManagementServiceGetTelemetryDataTest {
 
     // then
     Map<String, Metric> metrics = telemetryData.getProduct().getInternals().getMetrics();
-    assertThat(metrics.size()).isEqualTo(7);
-    assertThat(metrics.get(Metrics.ACTIVTY_INSTANCE_START).getCount()).isEqualTo(2);
-    assertThat(metrics.get(Metrics.FLOW_NODE_INSTANCES_START).getCount()).isEqualTo(2);
-    assertThat(metrics.get(Metrics.ROOT_PROCESS_INSTANCE_START).getCount()).isEqualTo(1);
-    assertThat(metrics.get(Metrics.PROCESS_INSTANCES).getCount()).isEqualTo(1);
-    assertThat(metrics.get(Metrics.EXECUTED_DECISION_INSTANCES).getCount()).isEqualTo(0);
-    assertThat(metrics.get(Metrics.DECISION_INSTANCES).getCount()).isEqualTo(0);
-    assertThat(metrics.get(Metrics.EXECUTED_DECISION_ELEMENTS).getCount()).isEqualTo(0);
+    assertThat(metrics.size()).isEqualTo(4);
+    assertThat(metrics.get(FLOW_NODE_INSTANCES_START).getCount()).isEqualTo(2);
+    assertThat(metrics.get(PROCESS_INSTANCES).getCount()).isEqualTo(1);
+    assertThat(metrics.get(DECISION_INSTANCES).getCount()).isEqualTo(0);
+    assertThat(metrics.get(EXECUTED_DECISION_ELEMENTS).getCount()).isEqualTo(0);
   }
 
   protected void assertTelemetryData(TelemetryData data, boolean telemetryEnabled) {
@@ -459,15 +451,11 @@ public class ManagementServiceGetTelemetryDataTest {
       assertThat(data.getProduct().getInternals().getCommands().get(TELEMETRY_CONFIGURE_CMD_NAME).getCount()).isEqualTo(1);
     }
 
-    assertThat(data.getProduct().getInternals().getMetrics()).containsOnlyKeys(ROOT_PROCESS_INSTANCE_START,
-        PROCESS_INSTANCES, ACTIVTY_INSTANCE_START, FLOW_NODE_INSTANCES_START, EXECUTED_DECISION_ELEMENTS,
-        EXECUTED_DECISION_INSTANCES, DECISION_INSTANCES);
-    assertThat(data.getProduct().getInternals().getMetrics().get(ROOT_PROCESS_INSTANCE_START).getCount()).isEqualTo(2);
+    assertThat(data.getProduct().getInternals().getMetrics()).containsOnlyKeys(PROCESS_INSTANCES,
+        FLOW_NODE_INSTANCES_START, EXECUTED_DECISION_ELEMENTS, DECISION_INSTANCES);
     assertThat(data.getProduct().getInternals().getMetrics().get(PROCESS_INSTANCES).getCount()).isEqualTo(2);
-    assertThat(data.getProduct().getInternals().getMetrics().get(ACTIVTY_INSTANCE_START).getCount()).isEqualTo(4);
     assertThat(data.getProduct().getInternals().getMetrics().get(FLOW_NODE_INSTANCES_START).getCount()).isEqualTo(4);
     assertThat(data.getProduct().getInternals().getMetrics().get(EXECUTED_DECISION_ELEMENTS).getCount()).isEqualTo(8);
-    assertThat(data.getProduct().getInternals().getMetrics().get(EXECUTED_DECISION_INSTANCES).getCount()).isEqualTo(16);
     assertThat(data.getProduct().getInternals().getMetrics().get(DECISION_INSTANCES).getCount()).isEqualTo(16);
 
     assertThat(data.getProduct().getInternals().getWebapps()).containsExactlyInAnyOrder("cockpit", "admin");
