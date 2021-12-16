@@ -16,10 +16,28 @@
  */
 package org.camunda.bpm.engine.impl.interceptor;
 
+import org.camunda.bpm.engine.AuthorizationException;
 import org.camunda.bpm.engine.impl.cfg.CommandChecker;
+import org.camunda.bpm.engine.impl.persistence.entity.AuthorizationManager;
 
-public interface AuthorizedCmd {
-  
+/**
+ * A {@link Command} that requires the user executing the command to have
+ * certain permissions.
+ *
+ * The permissions are evaluated if the implementing command calls
+ * {@link AuthorizationManager#checkAuthorizedCommand(boolean, AuthorizedCmd)}
+ * from its {@link Command#execute(CommandContext) execute(CommandContext)}
+ * method.
+ */
+public interface AuthorizedCommand {
+
+  /**
+   * The implementing method can perform any permission checks defined in the
+   * {@link CommandChecker} interface. If one of the checks fails the
+   * {@link CommandChecker} will thrown an {@link AuthorizationException}.
+   *
+   * @param checker
+   */
   public void checkAuthorization(CommandChecker checker);
 
 }

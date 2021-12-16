@@ -368,8 +368,18 @@ public interface CommandChecker {
   void checkDeleteHistoricVariableInstancesByProcessInstance(HistoricProcessInstanceEntity instance);
 
   /**
-   * Checks if it is allowed to retrieve collected telemetry data.
+   * Checks if it is allowed to read system data like telemetry data or license key information.
    */
-  void checkReadTelemetryData();
+  void checkReadSystemData();
+
+  /**
+   * Checks if it is allowed to create new or update existing system data like system properties.
+   */
+  void checkWriteSystemData();
+
+  /**
+   * Checks if it is allowed to delete system data like system properties.
+   */
+  void checkDeleteSystemData();
 
 }

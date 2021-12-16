@@ -19,13 +19,13 @@ package org.camunda.bpm.engine.impl.cmd;
 import org.camunda.bpm.engine.impl.ProcessEngineLogger;
 import org.camunda.bpm.engine.impl.cfg.CommandChecker;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.camunda.bpm.engine.impl.interceptor.AuthorizedCmd;
+import org.camunda.bpm.engine.impl.interceptor.AuthorizedCommand;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
 import org.camunda.bpm.engine.impl.telemetry.dto.TelemetryDataImpl;
 import org.camunda.bpm.engine.impl.telemetry.reporter.TelemetryReporter;
 
-public class GetTelemetryDataCmd implements Command<TelemetryDataImpl>, AuthorizedCmd {
+public class GetTelemetryDataCmd implements Command<TelemetryDataImpl>, AuthorizedCommand {
 
   ProcessEngineConfigurationImpl configuration;
 
@@ -46,6 +46,6 @@ public class GetTelemetryDataCmd implements Command<TelemetryDataImpl>, Authoriz
 
   @Override
   public void checkAuthorization(CommandChecker checker) {
-    checker.checkReadTelemetryData();
+    checker.checkReadSystemData();
   }
 }

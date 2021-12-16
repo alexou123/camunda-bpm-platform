@@ -99,7 +99,7 @@ import org.camunda.bpm.engine.impl.db.entitymanager.operation.DbOperation;
 import org.camunda.bpm.engine.impl.dmn.entity.repository.DecisionDefinitionQueryImpl;
 import org.camunda.bpm.engine.impl.dmn.entity.repository.DecisionRequirementsDefinitionQueryImpl;
 import org.camunda.bpm.engine.impl.identity.Authentication;
-import org.camunda.bpm.engine.impl.interceptor.AuthorizedCmd;
+import org.camunda.bpm.engine.impl.interceptor.AuthorizedCommand;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
 import org.camunda.bpm.engine.impl.persistence.AbstractManager;
 import org.camunda.bpm.engine.impl.persistence.entity.util.AuthManagerUtil;
@@ -514,7 +514,7 @@ public class AuthorizationManager extends AbstractManager {
     }
   }
 
-  public void checkAuthorizedCommand(boolean isAdminAuthorized, AuthorizedCmd command) {
+  public void checkAuthorizedCommand(boolean isAdminAuthorized, AuthorizedCommand command) {
     AuthorizationException authorizationException = null;
     AuthorizationException adminException = null;
     try {

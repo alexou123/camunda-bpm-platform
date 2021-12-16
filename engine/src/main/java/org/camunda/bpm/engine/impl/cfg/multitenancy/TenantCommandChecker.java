@@ -497,7 +497,15 @@ public class TenantCommandChecker implements CommandChecker {
   }
 
   @Override
-  public void checkReadTelemetryData() {
+  public void checkReadSystemData() {
+  }
+
+  @Override
+  public void checkWriteSystemData() {
+  }
+
+  @Override
+  public void checkDeleteSystemData() {
   }
 
   // helper //////////////////////////////////////////////////
