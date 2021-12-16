@@ -30,6 +30,7 @@ import org.camunda.bpm.engine.AuthorizationException;
 import org.camunda.bpm.engine.authorization.Groups;
 import org.camunda.bpm.engine.authorization.Resources;
 import org.camunda.bpm.engine.authorization.SystemPermissions;
+import org.camunda.bpm.engine.authorization.TaskPermissions;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.camunda.bpm.engine.management.TableMetaData;
 import org.camunda.bpm.engine.management.TablePage;
@@ -298,7 +299,8 @@ public class ManagementAuthorizationTest extends AuthorizationTest {
       managementService.getTelemetryData();
     })
     // then
-    .hasMessageContaining("The user with id 'test' is not an admin authenticated user or  does not have one of the following permissions: 'READ' permission on resource 'System'");
+      .hasMessageContaining(
+          "The user with id 'test' is not an admin authenticated user or does not have one of the following permissions: 'READ' permission on resource 'System'");
   }
 
   @Test
@@ -331,13 +333,26 @@ public class ManagementAuthorizationTest extends AuthorizationTest {
     // given
     identityService.setAuthentication(userId, Collections.singletonList(Groups.CAMUNDA_ADMIN));
     createGrantAuthorization(Resources.SYSTEM, "*", userId, SystemPermissions.READ);
-    identityService.setAuthentication(userId, null);
 
     // when
     TelemetryData telemetryData = managementService.getTelemetryData();
 
     // then
     assertThat(telemetryData).isNotNull();
+  }
+
+  @Test
+  public void shouldNotGetTelemetryDataWithWrongPermission() {
+    // given
+    createGrantAuthorization(Resources.TASK, "*", userId, TaskPermissions.READ);
+
+    assertThatThrownBy(() -> {
+      // when
+      managementService.getTelemetryData();
+    })
+    // then
+      .hasMessageContaining(
+          "The user with id 'test' is not an admin authenticated user or does not have one of the following permissions: 'READ' permission on resource 'System'");
   }
 
 }
